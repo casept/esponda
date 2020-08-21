@@ -24,7 +24,6 @@ in nixpkgs.mkShell {
     nixpkgs.godef
     #nixpkgs.goreturns
     nixpkgs.golint
-    vgo2nix
     niv.niv
 
     nixpkgs.imagemagick
