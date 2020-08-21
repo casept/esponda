@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/bwmarrin/discordgo"
 	"github.com/jedib0t/go-pretty/table"
 )
 
@@ -44,4 +45,11 @@ func (b *BingoBoard) boardToASCII() string {
 	})
 	//t.AppendSeparator()
 	return t.RenderMarkdown()
+}
+
+// Send a bingo board to the chat.
+func sendBingo(s *discordgo.Session, channelID string) {
+	b := newBingoBoard()
+	s.ChannelMessageSend(channelID, "```\n"+b.boardToASCII()+"```\n")
+
 }

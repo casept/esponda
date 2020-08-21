@@ -74,11 +74,11 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		fmt.Printf("Creating Schiller maymay with text '%s'\n", maymayText)
 		go createAndSendSchillerMaymay(s, maymayText, m.ChannelID)
 	}
-}
 
-// Send a bingo board to the chat.
-func sendBingo(s *discordgo.Session, channelID string) {
-	b := newBingoBoard()
-	s.ChannelMessageSend(channelID, "```\n"+b.boardToASCII()+"```\n")
-
+	// Haskell
+	if strings.HasPrefix(m.Content, "!hascc ") {
+		maymayText := strings.TrimPrefix(m.Content, "!hascc ")
+		fmt.Printf("Evaluating Haskell code '%s'\n", maymayText)
+		go createAndSendHaskellMaymay(s, maymayText, m.ChannelID)
+	}
 }

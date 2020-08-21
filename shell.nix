@@ -27,6 +27,7 @@ in nixpkgs.mkShell {
     niv.niv
 
     nixpkgs.imagemagick
+    nixpkgs.ghc
     nixpkgs.statik
   ];
 }
