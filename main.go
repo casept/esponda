@@ -70,15 +70,26 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	// Schiller maymays
 	if strings.HasPrefix(m.Content, "!schillersay ") {
-		maymayText := strings.TrimPrefix(m.Content, "!schillersay ")
-		fmt.Printf("Creating Schiller maymay with text '%s'\n", maymayText)
-		go createAndSendSchillerMaymay(s, maymayText, m.ChannelID)
-	}
+		availableStyles := make(map[string]func(s *discordgo.Session, maymayText string, channelID string))
+		availableStyles["schillerQuote"] = createAndSendSchillerQuoteMaymay
+		availableStyles["schillerSpeech"] = createAndSendSchillerSpeechMaymay
+		availableStyles["esponda"] = createAndSendEspondaMaymay
 
-	// Haskell
-	if strings.HasPrefix(m.Content, "!hascc ") {
-		maymayText := strings.TrimPrefix(m.Content, "!hascc ")
-		fmt.Printf("Evaluating Haskell code '%s'\n", maymayText)
-		go createAndSendHaskellMaymay(s, maymayText, m.ChannelID)
+		withoutPrefix := strings.TrimPrefix(m.Content, "!schillersay ")
+		styleAndText := strings.SplitN(withoutPrefix, " ", 2)
+		style := styleAndText[0]
+		if senderFunc, ok := availableStyles[style]; ok {
+			text := styleAndText[1]
+			fmt.Printf("Creating maymay in style '%s' with text '%s'\n", style, text)
+			go senderFunc(s, text, m.ChannelID)
+		} else {
+			// Send a help message
+			styles := []string{}
+			for style := range availableStyles {
+				styles = append(styles, style)
+			}
+			s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Unknown format. Available formats are %s", strings.Join(styles, " ")))
+		}
+
 	}
 }

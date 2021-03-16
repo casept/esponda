@@ -19,7 +19,7 @@ func extractAssetsIfNeeded() string {
 	_, err := os.Stat(dirPath)
 	if err != nil && os.IsNotExist(err) {
 		fmt.Println("Creating directory and extracting assets")
-		err = os.Mkdir(dirPath, 0700)
+		err = os.MkdirAll(dirPath, 0700)
 		if err != nil {
 			panic(err)
 		}
@@ -29,7 +29,7 @@ func extractAssetsIfNeeded() string {
 		if err != nil {
 			panic(err)
 		}
-		files := []string{"SchillerBlank.png", "Raleway-ExtraBold.ttf", "EspondaBlank.png"}
+		files := []string{"SchillerQuoteBlank.png", "SchillerSpeechBlank.png", "EspondaBlank.png", "RalewayUnicode.ttf", "Helvetica.ttf"}
 		for _, file := range files {
 			r, err := statikFS.Open(strings.Join([]string{"/", file}, ""))
 			if err != nil {
